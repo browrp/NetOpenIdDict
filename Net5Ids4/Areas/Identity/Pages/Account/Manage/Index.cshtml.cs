@@ -36,6 +36,13 @@ namespace Net5Ids4.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            //Adding in for FirstName LastName
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -43,12 +50,18 @@ namespace Net5Ids4.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
+
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                //Adding in First Name and Last Name
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
+
+
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -78,6 +91,14 @@ namespace Net5Ids4.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            if(Input.FirstName != user.FirstName || Input.LastName != user.LastName )
+            {
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
+            }
+
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
