@@ -6,6 +6,8 @@ namespace Net5Ids4.Data
 {
     public class ApplicationUser : IdentityUser<int>
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public bool IsActive { get; set; }
         public string MobilePhoneNumber { get; set; }
 
