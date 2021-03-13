@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.808.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetOpenIdDict", "Net5Ids4\NetOpenIdDict.csproj", "{65550014-D5B7-4DD6-8142-1D1D5C388970}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetOpenIdDict", "Net5Ids4\NetOpenIdDict.csproj", "{17B63D6B-457D-4713-88A9-673D89951CEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{65550014-D5B7-4DD6-8142-1D1D5C388970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65550014-D5B7-4DD6-8142-1D1D5C388970}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65550014-D5B7-4DD6-8142-1D1D5C388970}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65550014-D5B7-4DD6-8142-1D1D5C388970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B63D6B-457D-4713-88A9-673D89951CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B63D6B-457D-4713-88A9-673D89951CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B63D6B-457D-4713-88A9-673D89951CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B63D6B-457D-4713-88A9-673D89951CEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
