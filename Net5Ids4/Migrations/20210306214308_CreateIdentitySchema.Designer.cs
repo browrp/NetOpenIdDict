@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Net5Ids4.Data;
+using NetOpenIdDict.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Net5Ids4.Migrations
+namespace NetOpenIdDict.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210306214308_CreateIdentitySchema")]

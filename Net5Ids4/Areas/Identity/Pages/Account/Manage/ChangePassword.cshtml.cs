@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Net5Ids4.Data;
-namespace Net5Ids4.Areas.Identity.Pages.Account.Manage
+using NetOpenIdDict.Data;
+namespace NetOpenIdDict.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {

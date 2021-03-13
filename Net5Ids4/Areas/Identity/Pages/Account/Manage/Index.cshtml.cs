@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Net5Ids4.Data;
+using NetOpenIdDict.Data;
 
-namespace Net5Ids4.Areas.Identity.Pages.Account.Manage
+namespace NetOpenIdDict.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {

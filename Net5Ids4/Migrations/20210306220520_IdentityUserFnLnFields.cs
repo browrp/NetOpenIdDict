@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Net5Ids4.Migrations
+namespace NetOpenIdDict.Migrations
 {
     public partial class IdentityUserFnLnFields : Migration
     {

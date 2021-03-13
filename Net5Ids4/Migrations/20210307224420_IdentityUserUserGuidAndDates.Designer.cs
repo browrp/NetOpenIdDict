@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetOpenIdDict.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetOpenIdDict.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210307224420_IdentityUserUserGuidAndDates")]
+    partial class IdentityUserUserGuidAndDates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +107,7 @@ namespace NetOpenIdDict.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationRole", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,7 +141,7 @@ namespace NetOpenIdDict.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationUser", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,7 +228,7 @@ namespace NetOpenIdDict.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationUserRole", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationUserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -248,7 +250,7 @@ namespace NetOpenIdDict.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("NetOpenIdDict.Data.ApplicationRole", null)
+                    b.HasOne("Net5Ids4.Data.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -257,7 +259,7 @@ namespace NetOpenIdDict.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("NetOpenIdDict.Data.ApplicationUser", null)
+                    b.HasOne("Net5Ids4.Data.ApplicationUser", null)
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -266,7 +268,7 @@ namespace NetOpenIdDict.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("NetOpenIdDict.Data.ApplicationUser", null)
+                    b.HasOne("Net5Ids4.Data.ApplicationUser", null)
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -275,28 +277,28 @@ namespace NetOpenIdDict.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("NetOpenIdDict.Data.ApplicationUser", null)
+                    b.HasOne("Net5Ids4.Data.ApplicationUser", null)
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationUserRole", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationUserRole", b =>
                 {
-                    b.HasOne("NetOpenIdDict.Data.ApplicationRole", "Role")
+                    b.HasOne("Net5Ids4.Data.ApplicationRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetOpenIdDict.Data.ApplicationUser", null)
+                    b.HasOne("Net5Ids4.Data.ApplicationUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetOpenIdDict.Data.ApplicationUser", "User")
+                    b.HasOne("Net5Ids4.Data.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
 
@@ -305,12 +307,12 @@ namespace NetOpenIdDict.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationRole", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("NetOpenIdDict.Data.ApplicationUser", b =>
+            modelBuilder.Entity("Net5Ids4.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
 

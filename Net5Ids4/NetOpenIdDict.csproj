@@ -3,8 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-Net5Ids4-C1A79181-2F4D-4E05-8B4F-6D903A315C11</UserSecretsId>
+    <AssemblyName>Net5Ids4</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Net5Ids4' " />
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>

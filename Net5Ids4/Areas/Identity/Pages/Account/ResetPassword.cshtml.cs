@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Net5Ids4.Data;
+using NetOpenIdDict.Data;
 
-namespace Net5Ids4.Areas.Identity.Pages.Account
+namespace NetOpenIdDict.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel

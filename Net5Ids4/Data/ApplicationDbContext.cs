@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Net5Ids4.Data
+namespace NetOpenIdDict.Data
 {
     //Customized
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int,
