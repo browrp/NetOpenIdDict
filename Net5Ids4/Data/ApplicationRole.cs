@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace Net5Ids4.Data
+namespace NetOpenIdDict.Data
 {
     public class ApplicationRole : IdentityRole<int>
     {

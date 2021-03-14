@@ -1,6 +1,6 @@
 using System;
 
-namespace Net5Ids4.Models
+namespace NetOpenIdDict.Models
 {
     public class ErrorViewModel
     {
