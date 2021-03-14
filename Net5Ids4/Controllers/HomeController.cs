@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Net5Ids4.Models;
+using NetOpenIdDict.Models;
 
-namespace Net5Ids4.Controllers
+namespace NetOpenIdDict.Controllers
 {
     public class HomeController : Controller
     {
