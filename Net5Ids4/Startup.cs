@@ -65,16 +65,24 @@ namespace NetOpenIdDict
                 //// Register the OpenIddict server components.
                 .AddServer(options =>
                 {
-                    //Enable Token Endpoint
-                    options.SetTokenEndpointUris("/connect/token");
-
                     //Enable ClientCredentials Flow
                     options.AllowClientCredentialsFlow();
 
+                    options.AllowAuthorizationCodeFlow().RequireProofKeyForCodeExchange();
+
+                    //Enable Token Endpoint
+                    options.SetTokenEndpointUris("/connect/token");
+                    options.SetAuthorizationEndpointUris("/connect/authorize");
+                    
+
+
+                    //!! D E V E L O P M E N T   O N L Y !!
                     //Hack: This should only be done on DEVELOPMENT.  For Production use X.509 certificates are recommended!!!
                     // Register the signing and encryption credentials.
                     options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
-                    
+                    options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
+
+
 
                     //https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
                     //Added this in per Robin's documentation.
@@ -82,9 +90,9 @@ namespace NetOpenIdDict
                     options.RegisterScopes("api");
 
                     // Register the ASP.NET Core host and configure the ASP.NET Core options.
-                    options.UseAspNetCore().EnableTokenEndpointPassthrough();
-                    //ToDo: There are more passthroughs here that we need.
-
+                    options.UseAspNetCore()
+                    .EnableTokenEndpointPassthrough()
+                    .EnableAuthorizationEndpointPassthrough();
 
 
 
