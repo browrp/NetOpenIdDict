@@ -24,8 +24,8 @@ namespace NetOpenIdDict.Controllers
         /// https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
         /// </summary>
         /// <returns></returns>
-        [HttpPost("~/connect/token")]
-        public IActionResult Exchange()
+        [HttpPost("~/connect/token"), Produces("application/json")]
+        public async Task<IActionResult> Exchange()
         {
             var request = HttpContext.GetOpenIddictServerRequest() ??
                           throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
