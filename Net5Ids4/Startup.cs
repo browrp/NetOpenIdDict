@@ -71,9 +71,10 @@ namespace NetOpenIdDict
                     //Enable ClientCredentials Flow
                     options.AllowClientCredentialsFlow();
 
+                    //Hack: This should only be done on DEVELOPMENT.  For Production use X.509 certificates are recommended!!!
                     // Register the signing and encryption credentials.
                     options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
-
+                    
 
                     //https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
                     //Added this in per Robin's documentation.
@@ -93,6 +94,8 @@ namespace NetOpenIdDict
                     options.UseLocalServer();
                     options.UseAspNetCore();
                 });
+
+            services.AddHostedService<TestData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
