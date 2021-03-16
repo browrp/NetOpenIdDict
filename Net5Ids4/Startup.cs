@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 
 //ToDo: This explains Scopes https://stackoverflow.com/questions/48581556/oauth2-scopes-and-user-roles
@@ -54,6 +55,18 @@ namespace NetOpenIdDict
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
+            // https://github.com/openiddict/openiddict-samples/blob/dev/samples/Hollastin/Hollastin.Server/Startup.cs
+            // Configure Identity to use the same JWT claims as OpenIddict instead
+            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+            // which saves you from doing the mapping in your authorization controller.
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = Claims.Role;
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -77,6 +90,7 @@ namespace NetOpenIdDict
                     //Enable Token Endpoint
                     options.SetTokenEndpointUris("/connect/token");
                     options.SetAuthorizationEndpointUris("/connect/authorize");
+                    options.SetUserinfoEndpointUris("/connect/userinfo");
                     
 
 
@@ -84,6 +98,8 @@ namespace NetOpenIdDict
                     //Hack: This should only be done on DEVELOPMENT.  For Production use X.509 certificates are recommended!!!
                     // Register the signing and encryption credentials.
                     options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
+
+                    // Testing to see what happens when the token is passed back.
                     options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
 
 
@@ -96,7 +112,8 @@ namespace NetOpenIdDict
                     // Register the ASP.NET Core host and configure the ASP.NET Core options.
                     options.UseAspNetCore()
                     .EnableTokenEndpointPassthrough()
-                    .EnableAuthorizationEndpointPassthrough();
+                    .EnableAuthorizationEndpointPassthrough()
+                    .EnableUserinfoEndpointPassthrough();
 
 
 
