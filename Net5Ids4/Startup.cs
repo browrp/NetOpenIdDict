@@ -82,10 +82,20 @@ namespace NetOpenIdDict
                 //// Register the OpenIddict server components.
                 .AddServer(options =>
                 {
-                    //Enable ClientCredentials Flow
+                    // Enable ClientCredentials Flow
                     options.AllowClientCredentialsFlow();
 
-                    options.AllowAuthorizationCodeFlow().RequireProofKeyForCodeExchange();
+                    // Allow Authorization Code Flow 
+                    options.AllowAuthorizationCodeFlow();
+                    options.RequireProofKeyForCodeExchange(); // with PKCE
+
+                    // Allow Refresh Token Flow
+                    options.AllowRefreshTokenFlow();
+
+                    //Allow Password Grant flow
+                    options.AllowPasswordFlow();
+
+
 
                     //Enable Token Endpoint
                     options.SetTokenEndpointUris("/connect/token");
@@ -122,6 +132,8 @@ namespace NetOpenIdDict
                 {
                     options.UseLocalServer();
                     options.UseAspNetCore();
+                    
+                    
                 });
 
             services.AddHostedService<TestData>();

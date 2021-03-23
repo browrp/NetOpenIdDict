@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetOpenIdDict.Data;
 using OpenIddict.Abstractions;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace NetOpenIdDict
 {
@@ -61,12 +62,44 @@ namespace NetOpenIdDict
                         OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
                         OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
 
+                        // Enabling Refresh Token Flow
+                        // This requires the client to pass offline_access scope
+                        OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
 
-                        OpenIddictConstants.Permissions.ResponseTypes.Code
+                        OpenIddictConstants.Permissions.ResponseTypes.Code,
+
+                        // Allow Password Grant
+                        OpenIddictConstants.Permissions.GrantTypes.Password
+
+
                     }
                 }, cancellationToken);
+
+                
             }
+            // Me trying to pull the values and update them just to see if it works...
+            // This totally doesn't work.  How do we pull back settings for a particular client,
+            // update those settings, and then save them back to the DB? 
+            else 
+            {
+
+                //{ OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication`1[System.Int32]}
+
+                /*
+                var openIddictApplicationDescriptor = await manager.FindByClientIdAsync("postman", cancellationToken);
+                if(openIddictApplicationDescriptor != null)
+                {
+                    
+                    //openIddictApplicationDescriptor["Permissions"].Add()
+                    var casted = (OpenIddictEntityFrameworkCoreApplication)openIddictApplicationDescriptor;
+                    //casted.Permissions.Add(OpenIddictConstants.GrantTypes.RefreshToken);
+                    var t = casted.Properties;
+
+                }*/
+            }
+            
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
