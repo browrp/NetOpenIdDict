@@ -13,6 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
+using static OpenIddict.Abstractions.OpenIddictConstants;
+
+
+//ToDo: This explains Scopes https://stackoverflow.com/questions/48581556/oauth2-scopes-and-user-roles
 
 namespace NetOpenIdDict
 {
@@ -29,16 +33,110 @@ namespace NetOpenIdDict
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
+            {
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"));
+
+                //https://documentation.openiddict.com/guide/getting-started.html
+                // Register the entity sets needed by OpenIddict.
+                // Note: use the generic overload if you need
+                // to replace the default OpenIddict entities.
+                //Added in int to match Identity Framework customization
+                options.UseOpenIddict<int>();
+
+            });
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+                
+               
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultUI()  
+                .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
+            // https://github.com/openiddict/openiddict-samples/blob/dev/samples/Hollastin/Hollastin.Server/Startup.cs
+            // Configure Identity to use the same JWT claims as OpenIddict instead
+            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+            // which saves you from doing the mapping in your authorization controller.
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = Claims.Role;
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddOpenIddict()
+                //// Register the OpenIddict core components.
+                .AddCore(options =>
+                {
+                    options.UseEntityFrameworkCore()
+                    .UseDbContext<ApplicationDbContext>()
+                    .ReplaceDefaultEntities<int>(); //Modified to match the Primary Key on the ApplicationUser https://documentation.openiddict.com/guide/getting-started.html
+
+                })
+                //// Register the OpenIddict server components.
+                .AddServer(options =>
+                {
+                    // Enable ClientCredentials Flow
+                    options.AllowClientCredentialsFlow();
+
+                    // Allow Authorization Code Flow 
+                    options.AllowAuthorizationCodeFlow();
+                    options.RequireProofKeyForCodeExchange(); // with PKCE
+
+                    // Allow Refresh Token Flow
+                    options.AllowRefreshTokenFlow();
+
+                    //Allow Password Grant flow
+                    options.AllowPasswordFlow();
+
+
+
+                    //Enable Token Endpoint
+                    options.SetTokenEndpointUris("/connect/token");
+                    options.SetAuthorizationEndpointUris("/connect/authorize");
+                    options.SetUserinfoEndpointUris("/connect/userinfo");
+                    
+
+
+                    //!! D E V E L O P M E N T   O N L Y !!
+                    //Hack: This should only be done on DEVELOPMENT.  For Production use X.509 certificates are recommended!!!
+                    // Register the signing and encryption credentials.
+                    options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
+
+                    // Testing to see what happens when the token is passed back.
+                    options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
+
+
+
+                    //https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
+                    //Added this in per Robin's documentation.
+                    //Is there a way we can DB Drive this?
+                    options.RegisterScopes("api");
+
+                    // Register the ASP.NET Core host and configure the ASP.NET Core options.
+                    options.UseAspNetCore()
+                    .EnableTokenEndpointPassthrough()
+                    .EnableAuthorizationEndpointPassthrough()
+                    .EnableUserinfoEndpointPassthrough();
+
+
+
+                })
+                .AddValidation(options =>
+                {
+                    options.UseLocalServer();
+                    options.UseAspNetCore();
+                    
+                    
+                });
+
+            services.AddHostedService<TestData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
