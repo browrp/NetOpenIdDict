@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using static OpenIddict.Abstractions.OpenIddictConstants;
+using Microsoft.IdentityModel.Tokens;
 
 
 //ToDo: This explains Scopes https://stackoverflow.com/questions/48581556/oauth2-scopes-and-user-roles
@@ -112,13 +113,21 @@ namespace NetOpenIdDict
                     // Testing to see what happens when the token is passed back.
                     options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
 
+                    // Register the encryption credentials. This sample uses a symmetric
+                    // encryption key that is shared between the server and the Api2 sample
+                    // (that performs local token validation instead of using introspection).
+                    //
+                    // Note: in a real world application, this encryption key should be
+                    // stored in a safe place (e.g in Azure KeyVault, stored as a secret).
+                    options.AddEncryptionKey(new SymmetricSecurityKey(
+                        Convert.FromBase64String("DRjd/GnduI3Efzen9V9BvbNUfc/VKgXltV7Kbk9sMkY=")));
 
 
                     //https://dev.to/robinvanderknaap/setting-up-an-authorization-server-with-openiddict-part-iii-client-credentials-flow-55lp
                     //Added this in per Robin's documentation.
                     //Is there a way we can DB Drive this?
                     options.RegisterScopes("api");
-
+                    
                     // Register the ASP.NET Core host and configure the ASP.NET Core options.
                     options.UseAspNetCore()
                     .EnableTokenEndpointPassthrough()

@@ -126,8 +126,9 @@ namespace NetOpenIdDict.Controllers
                 {
                     claim.SetDestinations(GetDestinations(claim, claimsPrincipal));
                 }
-
-                //return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                // Adding in an audience here because the JWT Validation Endpoint failed with error 'empty audience'
+                claimsPrincipal.SetAudiences("postman");
+                // return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
             else
             {
