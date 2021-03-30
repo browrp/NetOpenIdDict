@@ -10,6 +10,7 @@
     <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="3.0.2" />
     <PackageReference Include="OpenIddict.Validation.DataProtection" Version="3.0.2" />
     <PackageReference Include="OpenIddict.Validation.SystemNetHttp" Version="3.0.2" />
+    <PackageReference Include="System.Text.Json" Version="5.0.1" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Text.Json;
 
-namespace XamarinJWTAuth.TokenManagement
+namespace XamarinJwtAuth.TokenManagement
 {
     public class TokenManager
     {

@@ -27,6 +27,7 @@
     <PackageReference Include="OpenIddict" Version="3.0.2" />
     <PackageReference Include="OpenIddict.AspNetCore" Version="3.0.2" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.0.2" />
+    <PackageReference Include="System.Text.Json" Version="5.0.1" />
   </ItemGroup>
 
 </Project>
