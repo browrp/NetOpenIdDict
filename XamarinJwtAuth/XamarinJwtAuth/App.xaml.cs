@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamarinJwtAuth.Services;
+using XamarinJwtAuth.TokenManagement;
 using XamarinJwtAuth.Views;
 
 namespace XamarinJwtAuth
@@ -14,6 +15,7 @@ namespace XamarinJwtAuth
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
+            DependencyService.Register<TokenManager>();
             MainPage = new AppShell();
         }
 

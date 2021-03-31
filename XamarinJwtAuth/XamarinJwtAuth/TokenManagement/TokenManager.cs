@@ -4,22 +4,24 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace XamarinJwtAuth.TokenManagement
 {
-    public class TokenManager
+    public class TokenManager : ITokenManager
     {
 
         private string _bearerToken { get; set; }
         private string _refreshToken { get; set; }
         private long _utcExpiryUnixEpoch { get; set; }
         private DateTime _expiryDateTime { get; set; }
+        private string _client { get; set; }
 
         //FixMe: How do I get the settings below in here? Does Xamarin use a config file?!?
 
         public TokenManager()
         {
-
+            _client = "postman";
         }
 
         /// <summary>
@@ -28,22 +30,32 @@ namespace XamarinJwtAuth.TokenManagement
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="rememberMe"></param>
-        public async Task Login(string username, string password, bool rememberMe = true)
+        public async Task<LoginResult> Login(string username, string password, bool rememberMe = true)
         {
             var keyValueList = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("grant_type", "password"),
                 new KeyValuePair<string, string>("username", username),
                 new KeyValuePair<string, string>("password", password),
-                new KeyValuePair<string, string>("client", "CLIENT_ID"),
-                new KeyValuePair<string, string>("scopes", "openid, offline_access api")
+                new KeyValuePair<string, string>("client_id", _client),
+                new KeyValuePair<string, string>("client_secret", "postman-secret"),
+                new KeyValuePair<string, string>("scope", "openid offline_access api")
             };
+
+
+            // Temporary bypass cert checks in Android https://stackoverflow.com/questions/58376095/xamarin-java-security-cert-certpathvalidatorexception-trust-anchor-for-certifi
+            var httpClientHandler = new HttpClientHandler();
+
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+            (message, cert, chain, errors) => { return true; };
 
             // Use a Named Client here with a Polly principal attached, give the user the ability to pass in a
             // previously named HttpClient.  Don't over-engineer this right now.
-            var client = new HttpClient();
+            var client = new HttpClient(httpClientHandler);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:5001/token");
+            // http://10.0.2.2
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://10.0.2.2:5001/connect/token");
+            //var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:5001/token");
             request.Content = new FormUrlEncodedContent(keyValueList);
 
             var response = await client.SendAsync(request);
@@ -51,17 +63,30 @@ namespace XamarinJwtAuth.TokenManagement
             if (response.IsSuccessStatusCode)
             {
                 // Pull off the token, refesh
+                var responseText = await response.Content.ReadAsStringAsync();
+
                 var tokenResult = await JsonSerializer.DeserializeAsync<TokenResult>(await response.Content.ReadAsStreamAsync());
                 //DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(token.exp);
                 DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(tokenResult.exp);
 
                 //return dateTimeOffset.LocalDateTime;
+                return new LoginResult()
+                {
+                    TokenRequestResult = TokenRequestResult.Success,
+                    Message = $"Token Result {tokenResult.access_token} "
+                };
 
 
             }
             else
             {
                 var tokenResultError = await JsonSerializer.DeserializeAsync<TokenResultError>(await response.Content.ReadAsStreamAsync());
+
+                return new LoginResult()
+                {
+                    TokenRequestResult = TokenRequestResult.Fail,
+                    Message = "Failed with error: ${tokenResultError.error}"
+                };
             }
 
 
@@ -71,18 +96,25 @@ namespace XamarinJwtAuth.TokenManagement
 
 
     }
-
-    public class TokenResult {
-        public string token { get; set; }
-        public long exp { get; set; }
+    
+    public class TokenResult
+    {
+        [JsonPropertyName("access_token")]
+        public string access_token { get; set; }
+        public string token_type { get; set; }
+        public int expires_in { get; set; }
+        public string scope { get; set; }
+        public string id_token { get; set; }
+        public string refresh_token { get; set; }
     }
 
     public class TokenResultError
     {
-        string error { get; set; }
-        string message { get; set; }
+        public string error { get; set; }
+        public string error_description { get; set; }
+        public string error_uri { get; set; }
     }
-
+    
 
     public class LoginResult
     {

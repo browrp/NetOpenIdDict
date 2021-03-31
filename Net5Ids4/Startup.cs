@@ -97,7 +97,6 @@ namespace NetOpenIdDict
                     options.AllowPasswordFlow();
 
 
-
                     //Enable Token Endpoint
                     options.SetTokenEndpointUris("/connect/token");
                     options.SetAuthorizationEndpointUris("/connect/authorize");
@@ -111,7 +110,7 @@ namespace NetOpenIdDict
                     options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
 
                     // Testing to see what happens when the token is passed back.
-                    //options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
+                    options.DisableAccessTokenEncryption();  //If not disabled you can't view your token at jwt.io
 
                     // Register the encryption credentials. This sample uses a symmetric
                     // encryption key that is shared between the server and the Api2 sample
@@ -133,7 +132,7 @@ namespace NetOpenIdDict
                     .EnableTokenEndpointPassthrough()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableUserinfoEndpointPassthrough();
-
+                    
 
 
                 })

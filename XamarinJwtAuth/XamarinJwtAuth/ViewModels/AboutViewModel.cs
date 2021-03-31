@@ -11,8 +11,12 @@ namespace XamarinJwtAuth.ViewModels
         {
             Title = "About";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+
+            LaunchLoginCommand = new Command(async () => await Shell.Current.GoToAsync("//LoginPage"));
         }
 
         public ICommand OpenWebCommand { get; }
+
+        public ICommand LaunchLoginCommand { get; }
     }
 }

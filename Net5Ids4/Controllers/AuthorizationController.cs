@@ -119,7 +119,8 @@ namespace NetOpenIdDict.Controllers
                     Scopes.OpenId,
                     Scopes.Email,
                     Scopes.Profile,
-                    Scopes.Roles
+                    Scopes.Roles,
+                    Scopes.OfflineAccess
                 }.Intersect(request.GetScopes()));
 
                 foreach (var claim in claimsPrincipal.Claims)
