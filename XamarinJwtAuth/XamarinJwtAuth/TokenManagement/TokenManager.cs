@@ -76,7 +76,7 @@ namespace XamarinJwtAuth.TokenManagement
                     TokenRequestResult = TokenRequestResult.Success,
                     Message = $"Token Expiry {tokenResult.expires_in} \n {tokenResult.access_token}"
                 };
-
+                
 
             }
             else
