@@ -65,30 +65,30 @@ namespace XamarinJwtAuth.TokenManagement
                 // Pull off the token, refesh
                 var responseText = await response.Content.ReadAsStringAsync();
 
-                var tokenResult = await JsonSerializer.DeserializeAsync<TokenResult>(await response.Content.ReadAsStreamAsync());
+                var tokenResult = await JsonSerializer.DeserializeAsync<TokenResult>( await response.Content.ReadAsStreamAsync() );
                 //DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(token.exp);
-                DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(tokenResult.exp);
+                //DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(tokenResult.exp);
+                tokenResult.ExpiresOn = DateTime.UtcNow.AddSeconds(tokenResult.expires_in);
 
                 //return dateTimeOffset.LocalDateTime;
                 return new LoginResult()
                 {
                     TokenRequestResult = TokenRequestResult.Success,
-                    Message = $"Token Result {tokenResult.access_token} "
+                    Message = $"Token Expiry {tokenResult.expires_in} \n {tokenResult.access_token}"
                 };
 
 
             }
             else
             {
-                var tokenResultError = await JsonSerializer.DeserializeAsync<TokenResultError>(await response.Content.ReadAsStreamAsync());
+                var tokenResultError = await JsonSerializer.DeserializeAsync<TokenResultError>( await response.Content.ReadAsStreamAsync() );
 
                 return new LoginResult()
                 {
                     TokenRequestResult = TokenRequestResult.Fail,
-                    Message = "Failed with error: ${tokenResultError.error}"
+                    Message = $"Failed with error: {tokenResultError.error} With error description: {tokenResultError.error_description} "
                 };
             }
-
 
 
         }
@@ -106,6 +106,8 @@ namespace XamarinJwtAuth.TokenManagement
         public string scope { get; set; }
         public string id_token { get; set; }
         public string refresh_token { get; set; }
+
+        public DateTime ExpiresOn { get; set; }
     }
 
     public class TokenResultError

@@ -12,6 +12,25 @@ namespace XamarinJwtAuth.ViewModels
 
         public Command LoginWithJwtCommand { get; }
 
+        // Create an event to call an event in the view.
+        // http://jesseliberty.com/2018/07/16/mvvm-ping-pong/
+        public  Action NotifyTokenInfoEvent;    // Doesn't work with paramters Using the Alert with Binding for data.
+        private string alertMessageTitle;
+        private string alertMessage;
+
+        public string AlertMessageTitle
+        {
+            get => alertMessageTitle;
+            set => SetProperty(ref alertMessageTitle, value);
+        }
+        public string AlertMessage
+        {
+            get => alertMessage;
+            set => SetProperty(ref alertMessage, value);
+        }
+
+
+
         private string username;
         private string password;
 
@@ -42,7 +61,20 @@ namespace XamarinJwtAuth.ViewModels
         private async void OnLoginWithJwtCommandClicked(object obj)
         {
             var tokenManager = DependencyService.Get<ITokenManager>();
-            await tokenManager.Login(username, password);
+            var loginResponse = await tokenManager.Login(username, password);
+
+            if (loginResponse.TokenRequestResult == TokenRequestResult.Fail)
+            {
+                this.AlertMessageTitle = "Token Request Failed";
+            }
+            else
+            {
+                this.AlertMessageTitle = "Token Request Success!";
+            }
+            this.AlertMessage = loginResponse.Message;
+            NotifyTokenInfoEvent?.Invoke();
+            
+
         }
     }
 }
