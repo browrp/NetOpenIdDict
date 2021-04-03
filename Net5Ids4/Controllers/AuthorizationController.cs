@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NetOpenIdDict.Data;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -23,16 +24,19 @@ namespace NetOpenIdDict.Controllers
     public class AuthorizationController : Controller
     {
 
+        private readonly ILogger<HomeController> _logger;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AuthorizationController(
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILogger<HomeController> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
 
@@ -90,6 +94,18 @@ namespace NetOpenIdDict.Controllers
                         [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
                         [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
                             "The username/password couple is invalid."
+                    });
+
+                    return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                }
+
+                var isConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                if (!isConfirmed)
+                {
+                    var properties = new AuthenticationProperties(new Dictionary<string, string> {
+                        [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InsufficientAccess,
+                        [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "" +
+                            "Email Address Not Confirmed."
                     });
 
                     return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
