@@ -40,6 +40,7 @@
     -->
     <TabBar>
         <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent Route="RegistrationPage" ContentTemplate="{DataTemplate local:RegisterPage}"/>
     </TabBar>
 
 

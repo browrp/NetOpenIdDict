@@ -8,13 +8,31 @@ namespace XamarinJwtAuth.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+
+        public LoginViewModel()
+        {
+            LoginCommand = new Command(OnLoginClicked);
+            LoginWithJwtCommand = new Command(OnLoginWithJwtCommandClicked);
+        }
+
+
         public Command LoginCommand { get; }
 
         public Command LoginWithJwtCommand { get; }
 
+
+
+
+        //public Action<LoginResult> OnLoginResult { get; set; }
+        public Action<LoginResult> OnLoginResult { get; set; }
+
+
         // Create an event to call an event in the view.
         // http://jesseliberty.com/2018/07/16/mvvm-ping-pong/
         public  Action NotifyTokenInfoEvent;    // Doesn't work with paramters Using the Alert with Binding for data.
+
+        // There is a way that the MVVM model can send info back to the page
+
         private string alertMessageTitle;
         private string alertMessage;
 
@@ -46,11 +64,7 @@ namespace XamarinJwtAuth.ViewModels
             set => SetProperty(ref password, value);
         }
 
-        public LoginViewModel()
-        {
-            LoginCommand = new Command(OnLoginClicked);
-            LoginWithJwtCommand = new Command(OnLoginWithJwtCommandClicked);
-        }
+
 
         private async void OnLoginClicked(object obj)
         {
@@ -61,6 +75,7 @@ namespace XamarinJwtAuth.ViewModels
         private async void OnLoginWithJwtCommandClicked(object obj)
         {
             var tokenManager = DependencyService.Get<ITokenManager>();
+
             var loginResponse = await tokenManager.Login(username, password);
 
             if (loginResponse.TokenRequestResult == TokenRequestResult.Fail)
@@ -73,6 +88,8 @@ namespace XamarinJwtAuth.ViewModels
             }
             this.AlertMessage = loginResponse.Message;
             NotifyTokenInfoEvent?.Invoke();
+
+            OnLoginResult?.Invoke(loginResponse);
             
 
         }

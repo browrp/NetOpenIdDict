@@ -10,12 +10,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureWebApiOpenIddict", "SecureWebApiOpenIddict\SecureWebApiOpenIddict.csproj", "{15960F4C-F4D1-4921-BF38-793B4F994590}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XamarinJwtAuth", "XamarinJwtAuth", "{47DC47B8-4C73-4A97-BD6B-5B9D05D9E8A2}"
+	ProjectSection(SolutionItems) = preProject
+		XamarinJwtAuth\README.md = XamarinJwtAuth\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinJwtAuth.Android", "XamarinJwtAuth\XamarinJwtAuth.Android\XamarinJwtAuth.Android.csproj", "{746883D0-4FA0-4FBA-B09D-AA97BA71C1BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinJwtAuth.iOS", "XamarinJwtAuth\XamarinJwtAuth.iOS\XamarinJwtAuth.iOS.csproj", "{51DF6CB2-C32C-4734-B35C-F31DD567D574}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinJwtAuth", "XamarinJwtAuth\XamarinJwtAuth\XamarinJwtAuth.csproj", "{96009AA0-4D63-4BD2-855D-E670225E347B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XamarinWebAuthenticator", "XamarinWebAuthenticator", "{64AD74FA-5FB4-4CF8-A767-70A3411115F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,5 +115,10 @@ Global
 		{746883D0-4FA0-4FBA-B09D-AA97BA71C1BE} = {47DC47B8-4C73-4A97-BD6B-5B9D05D9E8A2}
 		{51DF6CB2-C32C-4734-B35C-F31DD567D574} = {47DC47B8-4C73-4A97-BD6B-5B9D05D9E8A2}
 		{96009AA0-4D63-4BD2-855D-E670225E347B} = {47DC47B8-4C73-4A97-BD6B-5B9D05D9E8A2}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
 	EndGlobalSection
 EndGlobal

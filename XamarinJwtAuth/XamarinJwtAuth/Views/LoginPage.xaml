@@ -12,7 +12,7 @@
             <Entry Placeholder="Email Address" PlaceholderColor="Olive"
                    TextColor="Purple" Text="{Binding Username, Mode=TwoWay}" />
             <Entry Placeholder="Password" IsPassword="True" PlaceholderColor="Olive" 
-                   TextColor= "Purple" Text="{Binding Password, Mode=TwoWay}" />
+                   TextColor= "Purple" Text="{Binding  Password, Mode=TwoWay}" />
 
             <Button VerticalOptions="Center" Text="Request JWT"
                     Command="{Binding LoginWithJwtCommand}" />

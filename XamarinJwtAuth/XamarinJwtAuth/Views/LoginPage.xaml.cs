@@ -7,6 +7,7 @@ using XamarinJwtAuth.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
+using XamarinJwtAuth.TokenManagement;
 
 namespace XamarinJwtAuth.Views
 {
@@ -18,9 +19,9 @@ namespace XamarinJwtAuth.Views
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
 
-            ((LoginViewModel)this.BindingContext).NotifyTokenInfoEvent += NotifyTokenInfoEventHandler;
+            //((LoginViewModel)this.BindingContext).NotifyTokenInfoEvent += NotifyTokenInfoEventHandler;
 
-
+            ((LoginViewModel)this.BindingContext).OnLoginResult = (obj) => { HandleOnLoginResult(obj); };
 
         }
 
@@ -44,6 +45,19 @@ namespace XamarinJwtAuth.Views
 
         }
 
+        private async void HandleOnLoginResult(LoginResult loginResult)
+        {
+
+            var title = "Action: " + loginResult.TokenRequestResult.ToString();
+            var message = ((LoginViewModel)this.BindingContext).AlertMessage;
+
+            _ =  MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await DisplayAlert(title: title,
+                                   message: message,
+                                   cancel: "Ok");
+            });
+        }
 
 
         private void HandleBindingContextChanged(object sender, EventArgs e)

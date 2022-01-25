@@ -52,6 +52,13 @@
                         BackgroundColor="{StaticResource Accent}"
                          CornerRadius="5"
                         TextColor="White" />
+
+                <Button Margin="0,10,0,0" Text="Register For An Account"
+                        Command="{Binding LaunchRegistrationCommand}"
+                        BackgroundColor="{StaticResource Accent}"
+                        CornerRadius="5"
+                        TextColor="White" />
+
             </StackLayout>
         </ScrollView>
     </Grid>
