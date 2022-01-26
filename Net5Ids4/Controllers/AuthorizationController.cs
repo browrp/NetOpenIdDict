@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NetOpenIdDict.Data;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -23,16 +24,19 @@ namespace NetOpenIdDict.Controllers
     public class AuthorizationController : Controller
     {
 
+        private readonly ILogger<HomeController> _logger;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AuthorizationController(
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ILogger<HomeController> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
 
@@ -95,6 +99,18 @@ namespace NetOpenIdDict.Controllers
                     return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
                 }
 
+                var isConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                if (!isConfirmed)
+                {
+                    var properties = new AuthenticationProperties(new Dictionary<string, string> {
+                        [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InsufficientAccess,
+                        [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "" +
+                            "Email Address Not Confirmed."
+                    });
+
+                    return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                }
+
                 // Validate the username/password parameters and ensure the account is not locked out.
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
                 if (!result.Succeeded)
@@ -119,7 +135,8 @@ namespace NetOpenIdDict.Controllers
                     Scopes.OpenId,
                     Scopes.Email,
                     Scopes.Profile,
-                    Scopes.Roles
+                    Scopes.Roles,
+                    Scopes.OfflineAccess
                 }.Intersect(request.GetScopes()));
 
                 foreach (var claim in claimsPrincipal.Claims)
