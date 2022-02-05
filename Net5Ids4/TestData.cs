@@ -77,7 +77,7 @@ namespace NetOpenIdDict
                     }
                 }, cancellationToken);
 
-                
+
             }
             // Me trying to pull the values and update them just to see if it works...
             // This totally doesn't work.  How do we pull back settings for a particular client,
@@ -98,6 +98,27 @@ namespace NetOpenIdDict
                     var t = casted.Properties;
 
                 }*/
+            }
+            if (await manager.FindByClientIdAsync("xamarinWebAuth", cancellationToken) is null)
+            {
+                //Adding in new configuration ot support Xamarin Forms Web Authenticator
+                await manager.CreateAsync(new OpenIddictApplicationDescriptor
+                {
+                    ClientId = "xamarinWebAuth",
+                    DisplayName = "Xamarin Web Authenticator",
+                    RedirectUris = { new Uri("xamarinWebAuth://") },
+                    Permissions =
+                    {
+                        OpenIddictConstants.Permissions.Endpoints.Authorization,
+                        OpenIddictConstants.Permissions.Endpoints.Token,
+                        OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+
+                        OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                        OpenIddictConstants.Permissions.Prefixes.Scope + "api",
+                        OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken,  //Was Code
+                        OpenIddictConstants.Permissions.Scopes.Profile
+                    }
+                }, cancellationToken);
             }
             
         }

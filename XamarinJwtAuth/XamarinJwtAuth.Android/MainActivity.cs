@@ -24,5 +24,17 @@ namespace XamarinJwtAuth.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+
+        /// <summary>
+        /// Adding because this blog said we needed it https://www.davidbritch.com/2020/04/authentication-from-xamarinforms-app.html
+        /// But upon reading the microsoft docs https://docs.microsoft.com/en-us/xamarin/essentials/web-authenticator?tabs=ios it doesn't show it
+        /// So adding this just in case.  We'll set a breakpoint to see if it's called.
+        /// </summary>
+        protected override void OnResume()
+        {
+            base.OnResume();
+            Xamarin.Essentials.Platform.OnResume();
+        }
     }
 }

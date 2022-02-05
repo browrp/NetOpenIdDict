@@ -14,15 +14,22 @@
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <!--<Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />-->
+                <Setter Property="Shell.BackgroundColor" Value="Yellow" />
+                <Setter Property="Shell.ForegroundColor" Value="LightCoral" />
+                <Setter Property="Shell.TitleColor" Value="Black" />
+                <Setter Property="Shell.DisabledColor" Value="Orange" />
+                <Setter Property="Shell.UnselectedColor" Value="Red" />
+                <!--<Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />-->
+                <Setter Property="Shell.TabBarBackgroundColor" Value="LightYellow" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="Yellow"/>
+
+                <!--Unselected Tab Bar Items -->
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#111111"/>
+
+                <!--Selected Tab Bar Item-->
+                <Setter Property="Shell.TabBarTitleColor" Value="DarkCyan"/>
+                <Setter Property="Shell.TabBarDisabledColor" Value="DarkMagenta" />
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
@@ -32,16 +39,21 @@
     <TabBar>
         <ShellContent Title="About" Icon="icon_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
         <ShellContent Title="Browse" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
+         <ShellContent Title="RPOC Login" Route="LoginPage" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent Title="Register" Route="RegistrationPage" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:RegisterPage}"/>
+        <ShellContent Title="PKCE" Route="PKCE" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:WebAuthenticatorPage}"/>
+
     </TabBar>
 
     <!--
         If you would like to navigate to this content you can do so by calling
         await Shell.Current.GoToAsync("//LoginPage");
     -->
+    <!--
     <TabBar>
         <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
         <ShellContent Route="RegistrationPage" ContentTemplate="{DataTemplate local:RegisterPage}"/>
     </TabBar>
-
+    -->
 
 </Shell>
