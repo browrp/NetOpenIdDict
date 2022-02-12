@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using NetOpenIdDict.Data;
 using OpenIddict.Abstractions;
 using OpenIddict.EntityFrameworkCore.Models;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace NetOpenIdDict
 {
@@ -68,7 +69,7 @@ namespace NetOpenIdDict
 
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
 
-                        OpenIddictConstants.Permissions.ResponseTypes.Code,
+                        OpenIddictConstants.Permissions.ResponseTypes.Code,  //.Code, CodeIdToken
 
                         // Allow Password Grant
                         OpenIddictConstants.Permissions.GrantTypes.Password
@@ -105,19 +106,29 @@ namespace NetOpenIdDict
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
                     ClientId = "xamarinWebAuth",
+                    ClientSecret = "",
                     DisplayName = "Xamarin Web Authenticator",
                     RedirectUris = { new Uri("xamarinWebAuth://") },
+                    PostLogoutRedirectUris = { new Uri("xamarinWebAuth://") },
                     Permissions =
                     {
                         OpenIddictConstants.Permissions.Endpoints.Authorization,
+                        OpenIddictConstants.Permissions.Endpoints.Logout,
                         OpenIddictConstants.Permissions.Endpoints.Token,
                         OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
 
                         OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                        OpenIddictConstants.Permissions.ResponseTypes.Code, //  CodeIdToken,  //Was Code
+
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
-                        OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken,  //Was Code
                         OpenIddictConstants.Permissions.Scopes.Profile
+                    },
+                    Requirements =
+                    {
+                        Requirements.Features.ProofKeyForCodeExchange
                     }
+                
+                   
                 }, cancellationToken);
             }
             

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;  //Added for Debug.WriteLine
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -15,6 +16,9 @@ namespace NetOpenIdDict.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
+                Debug.WriteLine("");
+                int i = 0;
+                i += 1;
             });
         }
     }

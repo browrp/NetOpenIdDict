@@ -6,6 +6,10 @@
     <ContentPage.Content>
         <StackLayout>
             <Button Text="Launch Web Authenticator" Clicked="LoginButtonClicked"/>
+
+            <Button Text="Get Token From Code" Clicked="OnCallAPIButtonClicked" />
+
+            <Button Text="Logout" Clicked="LogoutButtonClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -144,6 +144,25 @@ namespace NetOpenIdDict
                     
                 });
 
+            //ToDo: Update this code so that we redirect to a "Custom" Login Page for this client id.
+            /*s
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin =
+                    async (redirectContext) =>
+                    {
+                        var qs = redirectContext?.Request?.Query["client_id"].ToString();
+                        if(qs != null)
+                        {
+                           if (qs.Equals("xamarinWebAuth"))
+                            {
+                                //Redirect to a new 
+                            }
+                        }
+                    };
+            });
+            */
+
             services.AddHostedService<TestData>();
         }
 
