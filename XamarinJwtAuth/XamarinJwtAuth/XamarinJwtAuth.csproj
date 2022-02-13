@@ -17,12 +17,16 @@
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.1.0" />
     <PackageReference Include="System.Text.Json" Version="6.0.1" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="IdentityModel" />
     <None Remove="Exceptions\" />
+    <None Remove="Oicd\" />
+    <None Remove="IdentityModel.OidcClient" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
+    <Folder Include="Oicd\" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ using IdentityModel.Client;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamarinJwtAuth.Models;
+using XamarinJwtAuth.Oicd;
 using XamarinJwtAuth.Services;
 
 
@@ -24,6 +25,9 @@ namespace XamarinJwtAuth.Views
 
             identityService = new IdentityService(new RequestProvider());
 
+            //_oidcIdentityService = new OidcIdentityService("gnabbermobileclient", App.CallbackScheme, App.SignoutCallbackScheme, "openid profile offline_access", AuthorityUrl);
+            _oidcIdentityService = new OidcIdentityService(Constants.ClientId, Constants.RedirectUri, Constants.RedirectUri, Constants.Scope, "https://localhost:5001");
+
         }
 
 
@@ -36,22 +40,23 @@ namespace XamarinJwtAuth.Views
         */
         private async void LoginButtonClicked(object sender, EventArgs e)
         {
-            try
-            {
-                string url = identityService.CreateAuthorizationRequest();
-                WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri));
+            //try
+            //{
+            //    string url = identityService.CreateAuthorizationRequest();
+            //    WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri));
 
-                string raw = ParseAuthenticatorResult(authResult);
-                authorizeResponse = new AuthorizeResponse(raw);
-                if (authorizeResponse.IsError)
-                {
-                    Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
-            }
+            //    string raw = ParseAuthenticatorResult(authResult);
+            //    authorizeResponse = new AuthorizeResponse(raw);
+            //    if (authorizeResponse.IsError)
+            //    {
+            //        Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //    Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
+            //}
+            Login();
             
         }
 
@@ -120,7 +125,7 @@ namespace XamarinJwtAuth.Views
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
-            OidcClient
+            
             try
             {
                 string url = identityService.CreateAuthorizationRequest();
@@ -142,6 +147,51 @@ namespace XamarinJwtAuth.Views
 
         }
 
+
+        // This is the OIDC Login Implmenetaiton.  Anything here came from https://github.com/mallibone/XamarinIdentity101/blob/main/Mobile/OidcSample/ViewModels/MainViewModel.cs
+
+
+        private readonly OidcIdentityService _oidcIdentityService;
+
+        private Credentials _credentials;
+
+        private async void Login()
+        {
+            Credentials credentials = await _oidcIdentityService.Authenticate();
+            UpdateCredentials(credentials);
+
+            //_httpClient.DefaultRequestHeaders.Authorization = credentials.IsError
+            //    ? null
+            //    : new AuthenticationHeaderValue("bearer", credentials.AccessToken);
+        }
+
+        private async void RefreshTokens()
+        {
+            if (_credentials?.RefreshToken == null) return;
+            Credentials credentials = await _oidcIdentityService.RefreshToken(_credentials.RefreshToken);
+            UpdateCredentials(credentials);
+        }
+
+        private async void Logout()
+        {
+            await _oidcIdentityService.Logout(_credentials?.IdentityToken);
+            _credentials = null;
+            //OnPropertyChanged(nameof(TokenExpirationText));
+            //OnPropertyChanged(nameof(AccessTokenText));
+            //OnPropertyChanged(nameof(IdTokenText));
+            //OnPropertyChanged(nameof(IsLoggedIn));
+            //OnPropertyChanged(nameof(IsNotLoggedIn));
+        }
+
+        private void UpdateCredentials(Credentials credentials)
+        {
+            _credentials = credentials;
+            //OnPropertyChanged(nameof(TokenExpirationText));
+            //OnPropertyChanged(nameof(AccessTokenText));
+            //OnPropertyChanged(nameof(IdTokenText));
+            //OnPropertyChanged(nameof(IsLoggedIn));
+            //OnPropertyChanged(nameof(IsNotLoggedIn));
+        }
 
 
 
