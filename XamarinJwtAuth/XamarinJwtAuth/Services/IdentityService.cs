@@ -48,6 +48,11 @@ namespace XamarinJwtAuth.Services
         public async Task<UserToken> GetTokenAsync(string code)
         {
             string data = string.Format("grant_type=authorization_code&code={0}&redirect_uri={1}&code_verifier={2}", code, WebUtility.UrlEncode(Constants.RedirectUri), codeVerifier);
+
+            if (!String.IsNullOrEmpty(Constants.ClientId) && String.IsNullOrEmpty(Constants.ClientSecret))
+            {
+                data += string.Format("&client_id={0}", Constants.ClientId);
+            }
             var token = await requestProvider.PostAsync<UserToken>(Constants.TokenUri, data, Constants.ClientId, Constants.ClientSecret);
             return token;
         }

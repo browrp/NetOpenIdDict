@@ -17,7 +17,7 @@ namespace XamarinJwtAuth.Services
         public RequestProvider()
         {
             _client = CreateHttpClient(string.Empty);
-
+            
             //_serializerSettings = new JsonSerializerSettings
             //{
             //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -41,10 +41,16 @@ namespace XamarinJwtAuth.Services
         {
             //https://www.davidbritch.com/2017/06/ Is this for IdentityServer only or can this be done
             //  with OpenIdDict?
+            // We aren't using the clientSecret so the clientID will never be added and it will result in an
+            // unauthorized.  Therefore we should just pass this as a portion of the post data with the code, etc..
+
             if (!string.IsNullOrWhiteSpace(clientId) && !string.IsNullOrWhiteSpace(clientSecret))
             {
                 AddBasicAuthenticationHeader(clientId, clientSecret);
             }
+
+            //Test to add the clientId here as there is no secret and it probably needs to be passed
+
 
             var content = new StringContent(data);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
@@ -75,7 +81,15 @@ namespace XamarinJwtAuth.Services
         //more effort than necessary.
         HttpClient CreateHttpClient(string token = "")
         {
+            //Adding in HttpClientHandler to bypass the localhost ssl cert validation issue
+
+#if DEBUG
+            HttpClientHandler insecureHandler = GetInsecureHandler();
+            _client = new HttpClient(insecureHandler);
+#else
             _client = new HttpClient();
+#endif
+
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             if (!string.IsNullOrEmpty(token))
@@ -110,6 +124,19 @@ namespace XamarinJwtAuth.Services
 
                 throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
+        }
+
+
+        public HttpClientHandler GetInsecureHandler()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+            {
+                if (cert.Issuer.Equals("CN=localhost"))
+                    return true;
+                return errors == System.Net.Security.SslPolicyErrors.None;
+            };
+            return handler;
         }
 
 

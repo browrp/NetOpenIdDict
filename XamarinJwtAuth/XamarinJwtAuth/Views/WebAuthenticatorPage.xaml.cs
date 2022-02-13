@@ -120,7 +120,7 @@ namespace XamarinJwtAuth.Views
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
-            OidcClient
+            
             try
             {
                 string url = identityService.CreateAuthorizationRequest();
