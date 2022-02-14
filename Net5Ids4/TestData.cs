@@ -121,8 +121,7 @@ namespace NetOpenIdDict
                         OpenIddictConstants.Permissions.ResponseTypes.Code, //  CodeIdToken,  //Was Code
 
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
-                        OpenIddictConstants.Permissions.Scopes.Profile
-                    },
+                        OpenIddictConstants.Permissions.Scopes.Profile                    },
                     Requirements =
                     {
                         Requirements.Features.ProofKeyForCodeExchange

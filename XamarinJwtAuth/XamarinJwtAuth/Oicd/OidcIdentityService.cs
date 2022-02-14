@@ -79,8 +79,17 @@ namespace XamarinJwtAuth.Oicd
                 BackchannelHandler =
                     new HttpClientHandler()
                     {
-                         ServerCertificateCustomValidationCallback = (message, certificate, chain, sslPolicyErrors) => true
+                        ServerCertificateCustomValidationCallback = (message, certificate, chain, sslPolicyErrors) => true
+                    },
+                Policy = new Policy
+                {
+                    Discovery = new IdentityModel.Client.DiscoveryPolicy
+                    {
+                        ValidateEndpoints = false,
+                         Authority = _authorityUrl
                     }
+                }
+                 
                 
             };
 

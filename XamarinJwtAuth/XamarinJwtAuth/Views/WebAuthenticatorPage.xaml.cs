@@ -57,6 +57,8 @@ namespace XamarinJwtAuth.Views
             //    Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
             //}
             Login();
+
+            
             
         }
 
@@ -125,25 +127,27 @@ namespace XamarinJwtAuth.Views
 
         private async void LogoutButtonClicked(object sender, EventArgs e)
         {
-            
-            try
-            {
-                string url = identityService.CreateAuthorizationRequest();
-                WebAuthenticatorResult authResult =
-                    await WebAuthenticator.AuthenticateAsync(new Uri($"https://localhost:5001/Identity/Account/Logout?returnUrl={Constants.RedirectUri}"),
-                    new Uri(Constants.RedirectUri));
 
-                string raw = ParseAuthenticatorResult(authResult);
-                authorizeResponse = new AuthorizeResponse(raw);
-                if (authorizeResponse.IsError)
-                {
-                    Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
-            }
+            //try
+            //{
+            //    string url = identityService.CreateAuthorizationRequest();
+            //    WebAuthenticatorResult authResult =
+            //        await WebAuthenticator.AuthenticateAsync(new Uri($"https://localhost:5001/Identity/Account/Logout?returnUrl={Constants.RedirectUri}"),
+            //        new Uri(Constants.RedirectUri));
+
+            //    string raw = ParseAuthenticatorResult(authResult);
+            //    authorizeResponse = new AuthorizeResponse(raw);
+            //    if (authorizeResponse.IsError)
+            //    {
+            //        Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
+            //}
+
+            Logout();
 
         }
 
@@ -157,7 +161,9 @@ namespace XamarinJwtAuth.Views
 
         private async void Login()
         {
-            Credentials credentials = await _oidcIdentityService.Authenticate();
+            var credentials = await _oidcIdentityService.Authenticate();
+            Console.Write("********************");
+            Console.WriteLine($"Access Token: {credentials.AccessToken}");
             UpdateCredentials(credentials);
 
             //_httpClient.DefaultRequestHeaders.Authorization = credentials.IsError

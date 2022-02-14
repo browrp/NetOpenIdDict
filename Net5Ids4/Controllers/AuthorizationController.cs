@@ -219,13 +219,33 @@ namespace NetOpenIdDict.Controllers
         public async Task<IActionResult> Userinfo()
         {
             var claimsPrincipal = (await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
+            //claimsPrincipal.Claims.ToList()
+            var dic = new Dictionary<string, string>();
 
-            return Ok(new
+
+            foreach (var c in claimsPrincipal.Claims.ToList())
             {
-                Name = claimsPrincipal.GetClaim(OpenIddictConstants.Claims.Subject),
-                Occupation = "Developer",
-                Age = 43
-            });
+                
+                if(dic.ContainsKey(c.Type))
+                {
+                    var x = dic[c.Type];
+                    dic[c.Type] = x + " " + c.Value;
+                    
+                }
+                else
+                {
+                    dic.Add(c.Type, c.Value);
+                }
+              
+            }
+            return Ok(dic);
+
+            //return Ok(new
+            //{
+            //    Name = claimsPrincipal.GetClaim(OpenIddictConstants.Claims.Subject),
+            //    Occupation = "Developer",
+            //    Age = 43
+            //});
         }
 
 

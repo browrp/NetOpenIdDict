@@ -17,7 +17,7 @@ namespace XamarinJwtAuth
         //public static string ApiUri = "https://demo.identityserver.io/api/";
         public static string ClientId = "xamarinWebAuth";
         public static string ClientSecret = "";
-        public static string Scope = "api";
+        public static string Scope = "api openid offline_access";
         
 
         /*
