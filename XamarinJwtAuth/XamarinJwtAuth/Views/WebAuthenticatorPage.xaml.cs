@@ -40,26 +40,35 @@ namespace XamarinJwtAuth.Views
         */
         private async void LoginButtonClicked(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    string url = identityService.CreateAuthorizationRequest();
-            //    WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri));
+            try
+            {
+                string url = identityService.CreateAuthorizationRequest();
+                WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri) );
+                //WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(
+                //    new WebAuthenticatorOptions
+                //    );
 
-            //    string raw = ParseAuthenticatorResult(authResult);
-            //    authorizeResponse = new AuthorizeResponse(raw);
-            //    if (authorizeResponse.IsError)
-            //    {
-            //        Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
-            //    }
-            //}
-            //catch(Exception ex)
-            //{
-            //    Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
-            //}
-            Login();
 
-            
-            
+
+                string raw = ParseAuthenticatorResult(authResult);
+                authorizeResponse = new AuthorizeResponse(raw);
+                if (authorizeResponse.IsError)
+                {
+                    Console.WriteLine("ERROR: {0}", authorizeResponse.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception {ex.GetType()} occurred: {ex.Message}, {ex.InnerException}");
+            }
+
+
+
+
+            //Login();
+
+
+
         }
 
         string ParseAuthenticatorResult(WebAuthenticatorResult result)

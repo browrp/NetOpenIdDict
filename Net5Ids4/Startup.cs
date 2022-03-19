@@ -101,9 +101,10 @@ namespace NetOpenIdDict
                     options.SetTokenEndpointUris("/connect/token");
                     options.SetAuthorizationEndpointUris("/connect/authorize");
                     options.SetUserinfoEndpointUris("/connect/userinfo");
-                    
 
-
+                    // Added to enable "end_session_endpoint" in the .well-known/openid-configuration document
+                    options.SetLogoutEndpointUris("/connect/logout");
+;
                     //!! D E V E L O P M E N T   O N L Y !!
                     //Hack: This should only be done on DEVELOPMENT.  For Production use X.509 certificates are recommended!!!
                     // Register the signing and encryption credentials.
