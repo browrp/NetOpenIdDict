@@ -68,7 +68,7 @@ namespace XamarinJwtAuth.Oicd
         private OidcClient CreateOidcClient()
         {
             var options = new OidcClientOptions
-            {
+            {  
                 Authority = _authorityUrl,
                 ClientId = _clientId,
                 Scope = _scope,

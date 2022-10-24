@@ -43,10 +43,17 @@ namespace XamarinJwtAuth.Views
             try
             {
                 string url = identityService.CreateAuthorizationRequest();
-                WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri) );
-                //WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(
-                //    new WebAuthenticatorOptions
-                //    );
+                //WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(new Uri(url), new Uri(Constants.RedirectUri) );
+                var url1 = new Uri(url);
+                var callbackUrl = new Uri(Constants.RedirectUri);
+
+                WebAuthenticatorResult authResult = await WebAuthenticator.AuthenticateAsync(
+                    new WebAuthenticatorOptions
+                    {
+                        Url = url1,
+                        CallbackUrl = callbackUrl,
+                        PrefersEphemeralWebBrowserSession = true
+                    });
 
 
 
